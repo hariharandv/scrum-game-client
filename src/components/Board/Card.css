@@ -1,0 +1,140 @@
+.card {
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.card.dragging {
+  opacity: 0.5;
+  transform: rotate(5deg);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: #f7fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.card-effort {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.effort-small {
+  border-left: 4px solid #48bb78;
+}
+
+.effort-small .card-effort {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.effort-medium {
+  border-left: 4px solid #ed8936;
+}
+
+.effort-medium .card-effort {
+  background: #fed7aa;
+  color: #7c2d12;
+}
+
+.effort-large {
+  border-left: 4px solid #e53e3e;
+}
+
+.effort-large .card-effort {
+  background: #feb2b2;
+  color: #742a2a;
+}
+
+.effort-unknown {
+  border-left: 4px solid #a0aec0;
+}
+
+.effort-unknown .card-effort {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.technical-debt {
+  border: 2px solid #9f7aea !important;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e9ecef 100%);
+}
+
+.technical-debt-indicator {
+  background: #9f7aea;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
+.card-content {
+  padding: 0.75rem;
+}
+
+.card-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a202c;
+  line-height: 1.3;
+}
+
+.card-description {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #4a5568;
+  line-height: 1.4;
+}
+
+.card-footer {
+  padding: 0.5rem 0.75rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.card-meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.card-turn,
+.card-reverts,
+.card-cycle-time {
+  color: #718096;
+  font-weight: 500;
+}
+
+.card-assignee {
+  background: #e6fffa;
+  color: #234e52;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}

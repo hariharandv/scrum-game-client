@@ -1,0 +1,172 @@
+.column {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  min-width: 280px;
+  max-width: 320px;
+  flex: 1;
+  transition: all 0.3s ease;
+}
+
+.column-highlighted {
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  border: 3px solid #667eea;
+  transform: translateY(-2px);
+}
+
+.column-highlighted .column-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.column-highlighted .column-title,
+.column-highlighted .column-description,
+.column-highlighted .card-count {
+  color: white;
+}
+
+.column-header {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
+}
+
+.column-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a202c;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.your-column-badge {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.column-description {
+  font-size: 0.8rem;
+  color: #718096;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.card-count {
+  font-size: 0.75rem;
+  color: #a0aec0;
+  text-align: center;
+  font-weight: 500;
+}
+
+.column-content {
+  flex: 1;
+  padding: 1rem;
+  min-height: 400px;
+  max-height: calc(100vh - 300px); /* Ensure it doesn't overflow viewport */
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #c1c1c1 #f1f1f1; /* Firefox */
+}
+
+.column-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.column-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.column-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.column-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.empty-column {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a0aec0;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 2rem;
+}
+
+.empty-message {
+  opacity: 0.7;
+}
+
+/* Highlighted column styles */
+.column-highlighted {
+  border: 3px solid #667eea;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3), 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.column-highlighted .column-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.column-highlighted .column-title {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.column-highlighted .column-description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.column-highlighted .card-count {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.your-column-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+}
+
+/* Drag and drop states */
+.column-content.drag-over {
+  background: rgba(102, 126, 234, 0.1);
+  border: 2px dashed #667eea;
+  border-radius: 8px;
+}
+
+.column-highlighted .column-content.drag-over {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: #764ba2;
+}

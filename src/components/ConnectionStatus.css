@@ -1,0 +1,43 @@
+.connection-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.connection-status.connected {
+  background: rgba(56, 161, 105, 0.1);
+  color: #38a169;
+  border: 1px solid rgba(56, 161, 105, 0.2);
+}
+
+.connection-status.disconnected {
+  background: rgba(229, 62, 62, 0.1);
+  color: #e53e3e;
+  border: 1px solid rgba(229, 62, 62, 0.2);
+}
+
+.status-icon {
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.status-text {
+  line-height: 1;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .connection-status {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .status-icon {
+    font-size: 0.7rem;
+  }
+}

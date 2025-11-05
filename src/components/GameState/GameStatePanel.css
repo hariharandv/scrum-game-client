@@ -1,0 +1,218 @@
+.game-state-panel {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  min-width: 300px;
+  max-width: 400px;
+}
+
+.game-state-panel.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+
+.loading-message {
+  color: #718096;
+  font-size: 1rem;
+}
+
+.panel-header {
+  background: #f8fafc;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.turn-info {
+  font-size: 0.9rem;
+  color: #4a5568;
+  font-weight: 500;
+}
+
+.panel-content {
+  padding: 1.5rem;
+}
+
+.state-section {
+  margin-bottom: 1.5rem;
+}
+
+.state-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.phase-display {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.capacity-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.capacity-bar {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.capacity-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #48bb78 0%, #38a169 100%);
+  transition: width 0.3s ease;
+}
+
+.capacity-text {
+  font-size: 0.9rem;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.tokens-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.token-count {
+  font-size: 0.9rem;
+  color: #2d3748;
+  font-weight: 500;
+}
+
+.token-bar {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.token {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #e2e8f0;
+}
+
+.token.available {
+  background: #9f7aea;
+  border-color: #9f7aea;
+}
+
+.token.used {
+  background: #e2e8f0;
+}
+
+.technical-debt-notice {
+  font-size: 0.8rem;
+  color: #553c9a;
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  border-left: 3px solid #9f7aea;
+}
+
+.player-display {
+  padding: 0.5rem 1rem;
+  background: #e6fffa;
+  color: #234e52;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.metrics-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  color: #4a5568;
+}
+
+.metric-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.action-button {
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button.primary {
+  background: #4299e1;
+  color: white;
+}
+
+.action-button.primary:hover {
+  background: #3182ce;
+  transform: translateY(-1px);
+}
+
+.action-button.secondary {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.action-button.secondary:hover {
+  background: #cbd5e0;
+  transform: translateY(-1px);
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
