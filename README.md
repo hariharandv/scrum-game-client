@@ -1,15 +1,71 @@
-# React + TypeScript + Vite
+# Scrum Velocity Simulator - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive Scrum simulation game built with React 19, TypeScript, and Vite. Helps teams learn about velocity, work-in-progress limits, and technical debt through gamification.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Interactive Game Board**: Drag-and-drop cards between workflow columns
+- **Role-Based Gameplay**: Play as Product Owner, Scrum Master, or Developer
+- **D6 Dice System**: Roll dice to move tasks through the workflow
+- **Cumulative Flow Diagram**: Visualize work distribution over time
+- **Sprint Planning**: Pull stories from backlog and allocate capacity
+- **Retrospective View**: Analyze game metrics and team performance
+- **Save/Load Games**: Persist game state to local storage
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19
+- TypeScript
+- Vite
+- Recharts (for data visualization)
+- CSS Modules
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## Game Rules
+
+1. **Select Role**: Choose between Product Owner, Scrum Master, or Developer
+2. **Start Game**: Initialize the game board with cards
+3. **Move Cards**: Drag cards between columns based on your role permissions
+4. **Roll Dice**: Use D6 dice to determine movement outcomes
+5. **Sprint Planning**: Pull stories from Product Backlog to Sprint Backlog
+6. **Track Progress**: Monitor cumulative flow and velocity metrics
+
+## Role Permissions
+
+- **Product Owner**: Funnel → Product Backlog
+- **Scrum Master**: Product Backlog → Sprint Backlog  
+- **Developer**: Sprint Backlog through Testing
+
+## Environment Variables
+
+Create a `.env` file:
+
+```
+VITE_API_URL=http://localhost:5000/api
+```
+
+## Deployment
+
+Deployed on Vercel. Connect to backend API via environment variables.
+
+## License
+
+MIT
 
 ## Expanding the ESLint configuration
 
