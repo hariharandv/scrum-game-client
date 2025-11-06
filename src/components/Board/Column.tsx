@@ -1,11 +1,11 @@
 import React from 'react';
-import type { BoardColumn, Card } from '../../types/game';
+import type { BoardColumn, Card, ColumnState } from '../../types/game';
 import { CardComponent } from './Card';
 import './Column.css';
 
 interface ColumnProps {
   name: BoardColumn;
-  cards: Card[];
+  columnState: ColumnState;
   onCardDrop?: (cardId: string, targetColumn: BoardColumn) => void;
   onCardClick?: (card: Card) => void;
   isHighlighted?: boolean;
@@ -13,7 +13,7 @@ interface ColumnProps {
 
 export const Column: React.FC<ColumnProps> = ({
   name,
-  cards,
+  columnState,
   onCardDrop,
   onCardClick,
   isHighlighted = false
@@ -83,6 +83,8 @@ export const Column: React.FC<ColumnProps> = ({
     return descriptions[columnName];
   };
 
+  const totalCards = columnState.slots.length + columnState.queue.length;
+
   return (
     <div className={`column ${isHighlighted ? 'column-highlighted' : ''}`}>
       <div className="column-header">
@@ -91,7 +93,9 @@ export const Column: React.FC<ColumnProps> = ({
           {isHighlighted && <span className="your-column-badge">👤 Your Column</span>}
         </h3>
         <div className="column-description">{getColumnDescription(name)}</div>
-        <div className="card-count">{cards.length} cards</div>
+        <div className="card-count">
+          {totalCards} cards ({columnState.slots.length}/{columnState.wipLimit} active, {columnState.queue.length} waiting)
+        </div>
       </div>
 
       <div
@@ -101,15 +105,41 @@ export const Column: React.FC<ColumnProps> = ({
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
       >
-        {cards.map((card) => (
-          <CardComponent
-            key={card.id}
-            card={card}
-            onClick={() => onCardClick?.(card)}
-          />
-        ))}
+        {/* Active Slots */}
+        <div className="column-section">
+          <div className="section-header">Active Work ({columnState.slots.length}/{columnState.wipLimit})</div>
+          <div className="section-content">
+            {columnState.slots.map((card) => (
+              <CardComponent
+                key={card.id}
+                card={card}
+                onClick={() => onCardClick?.(card)}
+              />
+            ))}
+            {columnState.slots.length === 0 && (
+              <div className="empty-section">No active work</div>
+            )}
+          </div>
+        </div>
 
-        {cards.length === 0 && (
+        {/* Queue */}
+        {columnState.queue.length > 0 && (
+          <div className="column-section queue-section">
+            <div className="section-header">Waiting Queue ({columnState.queue.length})</div>
+            <div className="section-content">
+              {columnState.queue.map((card) => (
+                <CardComponent
+                  key={card.id}
+                  card={card}
+                  onClick={() => onCardClick?.(card)}
+                  isQueued={true}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {totalCards === 0 && (
           <div className="empty-column">
             <div className="empty-message">No cards in {getColumnTitle(name)}</div>
           </div>

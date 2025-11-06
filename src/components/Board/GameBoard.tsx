@@ -1,12 +1,12 @@
 import React from 'react';
-import type { BoardColumn, Card, PlayerRole } from '../../types/game';
+import type { BoardColumn, Card, PlayerRole, ColumnState } from '../../types/game';
 import { BOARD_COLUMNS } from '../../types/game';
 import { Column } from './Column';
 import { ROLE_COLUMN_MAP } from '../../utils/rolePermissions';
 import './GameBoard.css';
 
 interface GameBoardProps {
-  columns: Record<BoardColumn, Card[]>;
+  columns: Record<BoardColumn, ColumnState>;
   onCardMove?: (cardId: string, fromColumn: BoardColumn, toColumn: BoardColumn) => void;
   onCardClick?: (card: Card) => void;
   currentPhase?: string;
@@ -26,8 +26,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     // Find the card in the columns to determine fromColumn
     let fromColumn: BoardColumn | null = null;
     
-    for (const [columnName, cards] of Object.entries(columns)) {
-      if (cards.find((card: any) => card.id === cardId)) {
+    for (const [columnName, columnState] of Object.entries(columns)) {
+      // Check slots and queue
+      if (columnState.slots.find((card: Card) => card.id === cardId) ||
+          columnState.queue.find((card: Card) => card.id === cardId)) {
         fromColumn = columnName as BoardColumn;
         break;
       }
@@ -59,7 +61,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
             <Column
               key={columnName}
               name={columnName}
-              cards={columns[columnName] || []}
+              columnState={columns[columnName]}
               onCardDrop={(cardId: string, targetColumn: BoardColumn) => handleCardDrop(cardId, targetColumn)}
               onCardClick={onCardClick}
               isHighlighted={isPlayerColumn}

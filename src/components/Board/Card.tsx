@@ -5,9 +5,10 @@ import './Card.css';
 interface CardComponentProps {
   card: Card;
   onClick?: () => void;
+  isQueued?: boolean;
 }
 
-export const CardComponent: React.FC<CardComponentProps> = ({ card, onClick }) => {
+export const CardComponent: React.FC<CardComponentProps> = ({ card, onClick, isQueued = false }) => {
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData('cardId', card.id);
     e.dataTransfer.setData('fromColumn', card.currentColumn);
@@ -25,8 +26,8 @@ export const CardComponent: React.FC<CardComponentProps> = ({ card, onClick }) =
 
   return (
     <div
-      className={`card ${getEffortColor(card.effort)} ${card.isTechnicalDebt ? 'technical-debt' : ''}`}
-      draggable
+      className={`card ${getEffortColor(card.effort)} ${card.isTechnicalDebt ? 'technical-debt' : ''} ${isQueued ? 'queued' : ''}`}
+      draggable={!isQueued} // Queued cards shouldn't be draggable
       onDragStart={handleDragStart}
       onClick={onClick}
     >

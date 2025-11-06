@@ -76,6 +76,10 @@ class ApiClient {
     return this.request('/game/phase', { method: 'POST' });
   }
 
+  async advanceTurn(): Promise<ApiResponse<any>> {
+    return this.request('/game/turn', { method: 'POST' });
+  }
+
   async rollD6(cardId: string): Promise<ApiResponse<any>> {
     return this.request('/game/roll-d6', {
       method: 'POST',
@@ -110,6 +114,27 @@ class ApiClient {
     return this.request('/board/allocate-capacity', {
       method: 'POST',
       body: JSON.stringify({ cardId, effort }),
+    });
+  }
+
+  async acceptCard(cardId: string): Promise<ApiResponse<any>> {
+    return this.request('/board/accept-card', {
+      method: 'POST',
+      body: JSON.stringify({ cardId }),
+    });
+  }
+
+  async rejectCard(cardId: string): Promise<ApiResponse<any>> {
+    return this.request('/board/reject-card', {
+      method: 'POST',
+      body: JSON.stringify({ cardId }),
+    });
+  }
+
+  async useToken(cardId: string): Promise<ApiResponse<any>> {
+    return this.request('/board/use-token', {
+      method: 'POST',
+      body: JSON.stringify({ cardId }),
     });
   }
 }

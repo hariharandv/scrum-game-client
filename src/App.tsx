@@ -2,18 +2,21 @@ import { useState, useEffect } from 'react';
 import { GameBoard } from './components/Board';
 import { GameStatePanel } from './components/GameState';
 import { RoleActionPanel } from './components/Actions';
+import { RetrospectivePage } from './pages/RetrospectivePage';
 import { apiClient } from './services/api';
 // import { webSocketClient } from './services/websocket';
-import type { GameState, Card, BoardColumn, PlayerRole } from './types/game';
+import type { GameState, Card, BoardColumn } from './types/game';
 import { canMoveCardFromColumn, canMoveCardToColumn, canRollDice, getRoleDisplayName } from './utils/rolePermissions';
 import './App.css';
 
 function App() {
   // Game state from API
   const [gameState, setGameState] = useState<GameState | null>(null);
-  const [currentPlayer, setCurrentPlayer] = useState<PlayerRole>('Stakeholder');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Current player is now determined by game state
+  const currentPlayer = gameState?.currentPlayerTurn || 'Stakeholder';
 
   // Load game state from API
   useEffect(() => {
@@ -120,9 +123,22 @@ function App() {
     }
   };
 
-  const handleAdvanceTurn = () => {
-    console.log('Advancing turn');
-    // TODO: Implement turn advancement
+  const handleAdvanceTurn = async () => {
+    try {
+      const response = await apiClient.advanceTurn();
+      if (response.success) {
+        // Refresh game state after turn advancement
+        const stateResponse = await apiClient.getGameState();
+        if (stateResponse.success && stateResponse.data) {
+          setGameState(stateResponse.data);
+        }
+      } else {
+        setError(response.error?.message || 'Failed to advance turn');
+      }
+    } catch (err) {
+      setError('Failed to advance turn');
+      console.error('Error advancing turn:', err);
+    }
   };
 
   const handleCardSelect = async (cardIds: string[]) => {
@@ -148,8 +164,10 @@ function App() {
 
     // Find the card to determine its column
     let cardColumn: BoardColumn | null = null;
-    for (const [column, cards] of Object.entries(gameState.boardState.columns)) {
-      if (cards.find((c: Card) => c.id === cardId)) {
+    for (const [column, columnState] of Object.entries(gameState.boardState.columns)) {
+      // Check both slots and queue
+      if (columnState.slots.find((c: Card) => c.id === cardId) ||
+          columnState.queue.find((c: Card) => c.id === cardId)) {
         cardColumn = column as BoardColumn;
         break;
       }
@@ -201,14 +219,40 @@ function App() {
     }
   };
 
-  const handleAcceptCard = (cardId: string) => {
-    console.log('Accepting card:', cardId);
-    // TODO: Implement card acceptance
+  const handleAcceptCard = async (cardId: string) => {
+    try {
+      const response = await apiClient.acceptCard(cardId);
+      if (response.success) {
+        // Refresh game state after accepting card
+        const stateResponse = await apiClient.getGameState();
+        if (stateResponse.success && stateResponse.data) {
+          setGameState(stateResponse.data);
+        }
+      } else {
+        setError(response.error?.message || 'Failed to accept card');
+      }
+    } catch (err) {
+      setError('Failed to accept card');
+      console.error('Error accepting card:', err);
+    }
   };
 
-  const handleUseToken = (cardId: string) => {
-    console.log('Using token for card:', cardId);
-    // TODO: Implement token usage
+  const handleUseToken = async (cardId: string) => {
+    try {
+      const response = await apiClient.useToken(cardId);
+      if (response.success) {
+        // Refresh game state after using token
+        const stateResponse = await apiClient.getGameState();
+        if (stateResponse.success && stateResponse.data) {
+          setGameState(stateResponse.data);
+        }
+      } else {
+        setError(response.error?.message || 'Failed to use token');
+      }
+    } catch (err) {
+      setError('Failed to use token');
+      console.error('Error using token:', err);
+    }
   };
 
   const handleAllocateTechnicalDebt = (effort: number) => {
@@ -216,9 +260,22 @@ function App() {
     // TODO: Implement technical debt allocation
   };
 
-  const handleRejectCard = (cardId: string) => {
-    console.log(`Rejecting card ${cardId}`);
-    // TODO: Implement card rejection
+  const handleRejectCard = async (cardId: string) => {
+    try {
+      const response = await apiClient.rejectCard(cardId);
+      if (response.success) {
+        // Refresh game state after rejecting card
+        const stateResponse = await apiClient.getGameState();
+        if (stateResponse.success && stateResponse.data) {
+          setGameState(stateResponse.data);
+        }
+      } else {
+        setError(response.error?.message || 'Failed to reject card');
+      }
+    } catch (err) {
+      setError('Failed to reject card');
+      console.error('Error rejecting card:', err);
+    }
   };
 
   if (isLoading) {
@@ -302,67 +359,60 @@ function App() {
           <div className="game-info">
             <span className="turn-info">Turn: {gameState.boardState.currentTurn}</span>
             <span className="phase-info">Phase: {gameState.boardState.currentPhase}</span>
+            <span className="player-info">Current Player: {currentPlayer.replace('-', ' ')}</span>
           </div>
-        </div>
-        <div className="player-selector">
-          <label htmlFor="player-select">👤 Current Player:</label>
-          <select
-            id="player-select"
-            value={currentPlayer}
-            onChange={(e) => setCurrentPlayer(e.target.value as PlayerRole)}
-            className="player-select"
-          >
-            <option value="Stakeholder">🎯 Stakeholder/BA</option>
-            <option value="ProductOwner">📋 Product Owner</option>
-            <option value="ScrumMaster">🎓 Scrum Master</option>
-            <option value="Developer-Impl">💻 Developer (Implementation)</option>
-            <option value="Developer-Intg">🔗 Developer (Integration)</option>
-            <option value="QATester">🧪 QA Tester</option>
-            <option value="ReleaseManager">🚀 Release Manager</option>
-            <option value="Customer">👥 Customer</option>
-          </select>
         </div>
       </header>
 
       <main className="app-main">
-        <div className="game-layout">
-          {/* Game Board - Takes up most of the space */}
-          <div className="game-board-section">
-            <GameBoard
-              columns={gameState.boardState.columns}
-              onCardMove={handleCardMove}
-              onCardClick={handleCardClick}
-              currentPhase={gameState.boardState.currentPhase}
-              currentPlayer={currentPlayer}
-            />
-          </div>
+        {gameState.boardState.currentPhase === 'Retrospective' ? (
+          <RetrospectivePage
+            gameState={gameState}
+            currentPlayer={currentPlayer}
+            onRecordAdaptation={(adaptation) => console.log('Adaptation recorded:', adaptation)}
+            onCompleteRetrospective={handleAdvanceTurn}
+            isLoading={isLoading}
+          />
+        ) : (
+          <div className="game-layout">
+            {/* Game Board - Takes up most of the space */}
+            <div className="game-board-section">
+              <GameBoard
+                columns={gameState.boardState.columns}
+                onCardMove={handleCardMove}
+                onCardClick={handleCardClick}
+                currentPhase={gameState.boardState.currentPhase}
+                currentPlayer={currentPlayer}
+              />
+            </div>
 
-          {/* Side Panel - Game State and Actions */}
-          <div className="side-panel">
-            <GameStatePanel
-              gameState={gameState}
-              currentPhase={gameState.boardState.currentPhase}
-              scrumMasterState={gameState.scrumMasterState}
-              onAdvancePhase={handleAdvancePhase}
-              onAdvanceTurn={handleAdvanceTurn}
-            />
+            {/* Side Panel - Game State and Actions */}
+            <div className="side-panel">
+              <GameStatePanel
+                gameState={gameState}
+                currentPhase={gameState.boardState.currentPhase}
+                scrumMasterState={gameState.scrumMasterState}
+                onAdvancePhase={handleAdvancePhase}
+                onAdvanceTurn={handleAdvanceTurn}
+              />
 
-            <RoleActionPanel
-              currentPlayer={currentPlayer}
-              currentPhase={gameState.boardState.currentPhase}
-              availableCards={[]} // TODO: Filter based on current phase and player
-              selectedCards={[]}
-              onCardSelect={handleCardSelect}
-              onRollDice={handleRollDice}
-              onAllocateCapacity={handleAllocateCapacity}
-              onAcceptCard={handleAcceptCard}
-              onRejectCard={handleRejectCard}
-              onUseToken={handleUseToken}
-              onAllocateTechnicalDebt={handleAllocateTechnicalDebt}
-              isLoading={isLoading}
-            />
+              <RoleActionPanel
+                currentPlayer={currentPlayer}
+                currentPhase={gameState.boardState.currentPhase}
+                availableCards={[]} // TODO: Filter based on current phase and player
+                selectedCards={[]}
+                onCardSelect={handleCardSelect}
+                onRollDice={handleRollDice}
+                onAllocateCapacity={handleAllocateCapacity}
+                onAcceptCard={handleAcceptCard}
+                onRejectCard={handleRejectCard}
+                onUseToken={handleUseToken}
+                onAllocateTechnicalDebt={handleAllocateTechnicalDebt}
+                isLoading={isLoading}
+              />
+            </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
